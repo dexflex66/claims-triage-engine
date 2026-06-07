@@ -6,8 +6,6 @@ from typing import Any, Dict, List, Sequence, Tuple
 
 import yaml
 
-from compiler import load_policy
-
 _ALLOWED_PAYERS_BY_COUNTRY = {
     "US": {"BCBS", "AETNA"},
     "IN": {"STAR_HEALTH", "HDFC_ERGO"},
@@ -116,6 +114,7 @@ def validate_policy_runtime(policy: Any, country: str, payer_id: str) -> List[st
 
 
 def load_policy_for_country(country: str):
+    from compiler import load_policy  # lazy: requires QUEST_ROOT at runtime only
     return load_policy(_policy_path_for_country(country))
 
 

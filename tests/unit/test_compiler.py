@@ -1,7 +1,17 @@
-from compiler import compile_case, load_policy
+import os
+import pytest
+
+quest_available = bool(os.environ.get("QUEST_ROOT"))
+
+pytestmark = pytest.mark.skipif(
+    not quest_available,
+    reason="requires QUEST_ROOT env var pointing to QuEST core",
+)
 
 
 def test_compile_case_deterministic():
+    from compiler import compile_case, load_policy
+
     policy = load_policy("policy/claims_policy_us.yaml")
     fields = {
         "patient_id": "P001",
