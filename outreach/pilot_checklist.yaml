@@ -1,0 +1,23 @@
+# 2-week pilot acquisition checklist
+
+week_1:
+  list_building:
+    - "US: 50 practices (radiology prior auth volume 500+/year)"
+    - "India: 30 hospitals/clinics (TPA prior auth volume)"
+  referral_asks:
+    - "Contact 5 radiologists or RCM consultants for one warm intro"
+  outreach:
+    - "Send 20 personalized emails (use outreach_copy.md)"
+    - "Book 3x 15-minute workflow audits"
+
+week_2:
+  follow_up:
+    - "Follow up non-responders once"
+    - "Confirm 2 pilot agreements (per-case fee, 30-day trial)"
+  onboarding:
+    - "Kick off first pilot: intake form, sample cases, KPI baseline"
+  metrics:
+    - "Record baseline: denial rate, staff min/case, missing-doc rate"
+
+entry_promise: "Reduce rework hours first; then we prove approval rate improvement."
+pricing: "Per-case fee first; performance pricing after baseline measured."

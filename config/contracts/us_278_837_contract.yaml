@@ -1,0 +1,60 @@
+contract_id: us_278_837
+version: 1.0.0
+
+transport:
+  base_url_env: US278_BASE_URL
+  submit_path_env: US278_SUBMIT_PATH
+  status_path_env: US278_STATUS_PATH_TEMPLATE
+  receipt_path_env: US278_RECEIPT_PATH_TEMPLATE
+  timeout_env: US278_TIMEOUT_SECONDS
+  retries_env: US278_MAX_RETRIES
+  backoff_env: US278_BACKOFF_SECONDS
+  require_https_in_live: true
+
+auth:
+  mode_env: US278_AUTH_MODE
+  supported_modes:
+    - bearer
+    - hmac
+    - bearer_hmac
+  bearer_token_env: US278_API_TOKEN
+  hmac_secret_env: US278_HMAC_SECRET
+  hmac_key_id_env: US278_HMAC_KEY_ID
+
+headers:
+  idempotency: X-Idempotency-Key
+  timestamp: X-Request-Timestamp
+  signature: X-Quest-Signature
+  signature_timestamp: X-Quest-Timestamp
+  signature_key_id: X-Quest-Key-Id
+
+status_mapping:
+  queued: queued
+  submitted: submitted
+  accepted: acknowledged
+  ack: acknowledged
+  acknowledged: acknowledged
+  processing: processing
+  approved: approved
+  denied: denied
+  failed: failed
+  timeout: timeout
+
+required_submit_fields:
+  - case_id
+  - payer_id
+  - member_id
+  - diagnosis_code
+  - procedure_code
+  - provider_identifier
+  - clinical_summary
+
+response_contract:
+  submit_required:
+    - submission_id
+    - external_ref
+    - status
+  status_required:
+    - status
+  receipt_required:
+    - artifact_ref

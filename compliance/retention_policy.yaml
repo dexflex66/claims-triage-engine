@@ -1,0 +1,17 @@
+# Retention and deletion policy (HIPAA baseline)
+# Apply to PHI and audit logs per retention_seconds; then secure delete.
+
+default_retention_seconds: 2592000   # 30 days for working data
+audit_retention_seconds: 31536000   # 1 year for audit log
+outcomes_retention_seconds: 31536000 # 1 year for outcomes (de-identified analytics allowed longer)
+
+retention_by_resource_type:
+  case: 2592000
+  packet: 2592000
+  review_queue: 2592000
+  submissions: 2592000
+  outcomes: 31536000
+  audit_events: 31536000
+  playbooks: 0  # keep indefinitely; no PHI
+
+deletion_mode: secure  # overwrite or truncate; no soft-delete only

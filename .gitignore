@@ -1,0 +1,35 @@
+# Environment
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# Backups
+backups/
+
+# macOS
+.DS_Store
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Artifacts (generated outputs, not source)
+artifacts/
+
+# Logs
+*.log

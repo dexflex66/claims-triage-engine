@@ -1,0 +1,171 @@
+# India general radiology prior auth — Star Health + HDFC ERGO (2 payers)
+# Same 25 procedures, local code strings; documentation completeness + TAT focus
+
+policy_version: "claims/india/1.0.0"
+spec_version: "payer_proof/v1"
+
+actions:
+  commit_actions: ["APPROVE", "REJECT"]
+  abstain_action: "NONE"
+
+stage1_thresholds:
+  COV_MIN: 1.0
+  CON_MAX: 0.0
+  PROV_MIN: 0.85
+
+required_fields:
+  - name: "patient_id"
+    weight: 1.0
+  - name: "diagnosis_code"
+    weight: 1.0
+  - name: "procedure_code"
+    weight: 1.0
+  - name: "provider_id"
+    weight: 1.0
+  - name: "clinical_indication"
+    weight: 0.8
+
+conflict_rules:
+  - id: "DIAGNOSIS_PROCEDURE_MISMATCH"
+  - id: "DUPLICATE_PROCEDURE_DATE"
+  - id: "PROVENANCE_CONTRADICTION"
+
+provenance_sources:
+  - id: "CLAIM_FORM_PDF_V1"
+    rho: 0.92
+  - id: "CLINICAL_NOTE_V1"
+    rho: 0.90
+  - id: "RADIOLOGY_REPORT_V1"
+    rho: 0.90
+  - id: "PDF_EXTRACTOR_V1"
+    rho: 0.85
+  - id: "IMAGE_OCR_V1"
+    rho: 0.72
+
+provenance_aliases:
+  HISTORICAL_REPLAY: "CLINICAL_NOTE_V1"
+  EHR_NOTE: "CLINICAL_NOTE_V1"
+  ORDER_FORM: "CLAIM_FORM_PDF_V1"
+  PROVIDER_REGISTRY: "CLAIM_FORM_PDF_V1"
+
+provenance_prefix_aliases:
+  CMS_SYNPUF_: "CLINICAL_NOTE_V1"
+  SYNTHEA_: "CLINICAL_NOTE_V1"
+
+country_validation:
+  mode: "allowlist"
+
+country_codes:
+  - "IN"
+
+evidence_sources_by_field:
+  patient_id: ["CLAIM_FORM_PDF_V1", "CLINICAL_NOTE_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  diagnosis_code: ["CLAIM_FORM_PDF_V1", "CLINICAL_NOTE_V1", "RADIOLOGY_REPORT_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  procedure_code: ["CLAIM_FORM_PDF_V1", "CLINICAL_NOTE_V1", "RADIOLOGY_REPORT_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  provider_id: ["CLAIM_FORM_PDF_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  clinical_indication: ["CLINICAL_NOTE_V1", "RADIOLOGY_REPORT_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+
+evidence_schema:
+  mode: "strict"
+
+evidence_field_types:
+  patient_id: "string"
+  diagnosis_code: "string"
+  procedure_code: "string"
+  provider_id: "string"
+  clinical_indication: "string"
+
+low_trust_sources:
+  - "IMAGE_OCR_V1"
+
+timestamp_mode: "request"
+
+output_taxonomy:
+  global:
+    COMMIT_APPROVE: "APPROVE"
+    COMMIT_REJECT: "REJECT"
+    ABSTAIN: "REVIEW"
+
+label_taxonomy:
+  label_to_code:
+    COMMIT_APPROVE: "APPROVE"
+    COMMIT_REJECT: "REJECT"
+    ABSTAIN: "REVIEW"
+  code_to_label:
+    APPROVE: "Approve"
+    REJECT: "Reject"
+    REVIEW: "Review"
+
+redaction_fields:
+  - "patient_id"
+  - "patient_name"
+
+allow_demo_trusted_injection: false
+process_invariants: []
+proof_policy: {}
+
+provenance_contradiction:
+  high_rho: 0.9
+  low_rho: 0.5
+
+evidence_request_templates: {}
+conflict_severity: {}
+conflict_evidence_requirements: {}
+
+reason_codes:
+  R_SCHEMA_INVALID: "Request schema invalid"
+  R_MISSING_EVIDENCE: "Required evidence missing"
+  R_CONFLICT_HIGH: "Conflicts beyond policy tolerance"
+  R_PROVENANCE_LOW: "Provenance reliability below minimum"
+
+stage2:
+  enabled: false
+  segment_version: "segment/0.0.0"
+  segment_fields: []
+
+scorers:
+  registry: []
+  selection:
+    enabled: false
+  override:
+    enabled: false
+
+payers:
+  - id: "STAR_HEALTH"
+    name: "Star Health"
+    connector: "india_preauth"
+  - id: "HDFC_ERGO"
+    name: "HDFC ERGO Health"
+    connector: "india_preauth"
+
+submission:
+  default_channel: "india_preauth"
+  timeout_days: 7
+
+radiology_codes:
+  local:
+    - "RAD_CT_HEAD"
+    - "RAD_CT_CHEST"
+    - "RAD_CT_ABDOMEN"
+    - "RAD_MRI_SPINE_C"
+    - "RAD_MRI_SPINE_T"
+    - "RAD_MRI_SPINE_L"
+    - "RAD_MRI_BRAIN"
+    - "RAD_MRI_KNEE"
+    - "RAD_MRI_SHOULDER"
+    - "RAD_US_ABDOMEN"
+    - "RAD_US_PELVIC"
+    - "RAD_XRAY_CHEST"
+    - "RAD_XRAY_SPINE"
+    - "RAD_XRAY_EXT"
+    - "RAD_MAMMO"
+    - "RAD_DEXA"
+    - "RAD_FLUORO"
+    - "RAD_CT_ANGIO"
+    - "RAD_MRI_ANGIO"
+    - "RAD_NUC_MED"
+    - "RAD_PET"
+    - "RAD_IR"
+    - "RAD_OTHER_1"
+    - "RAD_OTHER_2"
+    - "RAD_OTHER_3"

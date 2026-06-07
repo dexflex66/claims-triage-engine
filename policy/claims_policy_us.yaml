@@ -1,0 +1,172 @@
+# US general radiology prior auth — BCBS + Aetna (2 payers)
+# Top 25 CPT codes; required fields and provenance for approval packet
+
+policy_version: "claims/us/1.0.0"
+spec_version: "payer_proof/v1"
+
+actions:
+  commit_actions: ["APPROVE", "REJECT"]
+  abstain_action: "NONE"
+
+stage1_thresholds:
+  COV_MIN: 1.0
+  CON_MAX: 0.0
+  PROV_MIN: 0.85
+
+required_fields:
+  - name: "patient_id"
+    weight: 1.0
+  - name: "diagnosis_code"
+    weight: 1.0
+  - name: "procedure_code"
+    weight: 1.0
+  - name: "provider_npi"
+    weight: 1.0
+  - name: "clinical_indication"
+    weight: 0.8
+
+conflict_rules:
+  - id: "DIAGNOSIS_PROCEDURE_MISMATCH"
+  - id: "DUPLICATE_PROCEDURE_DATE"
+  - id: "PROVENANCE_CONTRADICTION"
+
+provenance_sources:
+  - id: "CLAIM_FORM_PDF_V1"
+    rho: 0.92
+  - id: "CLINICAL_NOTE_V1"
+    rho: 0.90
+  - id: "RADIOLOGY_REPORT_V1"
+    rho: 0.90
+  - id: "PDF_EXTRACTOR_V1"
+    rho: 0.85
+  - id: "IMAGE_OCR_V1"
+    rho: 0.72
+
+provenance_aliases:
+  HISTORICAL_REPLAY: "CLINICAL_NOTE_V1"
+  EHR_NOTE: "CLINICAL_NOTE_V1"
+  ORDER_FORM: "CLAIM_FORM_PDF_V1"
+  PROVIDER_REGISTRY: "CLAIM_FORM_PDF_V1"
+
+provenance_prefix_aliases:
+  CMS_SYNPUF_: "CLINICAL_NOTE_V1"
+  SYNTHEA_: "CLINICAL_NOTE_V1"
+
+country_validation:
+  mode: "allowlist"
+
+country_codes:
+  - "US"
+
+evidence_sources_by_field:
+  patient_id: ["CLAIM_FORM_PDF_V1", "CLINICAL_NOTE_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  diagnosis_code: ["CLAIM_FORM_PDF_V1", "CLINICAL_NOTE_V1", "RADIOLOGY_REPORT_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  procedure_code: ["CLAIM_FORM_PDF_V1", "CLINICAL_NOTE_V1", "RADIOLOGY_REPORT_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  provider_npi: ["CLAIM_FORM_PDF_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+  clinical_indication: ["CLINICAL_NOTE_V1", "RADIOLOGY_REPORT_V1", "PDF_EXTRACTOR_V1", "IMAGE_OCR_V1"]
+
+evidence_schema:
+  mode: "strict"
+
+evidence_field_types:
+  patient_id: "string"
+  diagnosis_code: "string"
+  procedure_code: "string"
+  provider_npi: "string"
+  clinical_indication: "string"
+
+low_trust_sources:
+  - "IMAGE_OCR_V1"
+
+timestamp_mode: "request"
+
+output_taxonomy:
+  global:
+    COMMIT_APPROVE: "APPROVE"
+    COMMIT_REJECT: "REJECT"
+    ABSTAIN: "REVIEW"
+
+label_taxonomy:
+  label_to_code:
+    COMMIT_APPROVE: "APPROVE"
+    COMMIT_REJECT: "REJECT"
+    ABSTAIN: "REVIEW"
+  code_to_label:
+    APPROVE: "Approve"
+    REJECT: "Reject"
+    REVIEW: "Review"
+
+redaction_fields:
+  - "patient_id"
+  - "patient_name"
+
+allow_demo_trusted_injection: false
+process_invariants: []
+proof_policy: {}
+
+provenance_contradiction:
+  high_rho: 0.9
+  low_rho: 0.5
+
+evidence_request_templates: {}
+conflict_severity: {}
+conflict_evidence_requirements: {}
+
+reason_codes:
+  R_SCHEMA_INVALID: "Request schema invalid"
+  R_MISSING_EVIDENCE: "Required evidence missing"
+  R_CONFLICT_HIGH: "Conflicts beyond policy tolerance"
+  R_PROVENANCE_LOW: "Provenance reliability below minimum"
+
+stage2:
+  enabled: false
+  segment_version: "segment/0.0.0"
+  segment_fields: []
+
+scorers:
+  registry: []
+  selection:
+    enabled: false
+  override:
+    enabled: false
+
+# Payer-specific criteria (for packet builder and playbooks)
+payers:
+  - id: "BCBS"
+    name: "Blue Cross Blue Shield"
+    connector: "us_278_837"
+  - id: "AETNA"
+    name: "Aetna"
+    connector: "us_278_837"
+
+submission:
+  default_channel: "us_278_837"
+  timeout_days: 7
+
+radiology_codes:
+  cpt:
+    - "70450"
+    - "70460"
+    - "70470"
+    - "70480"
+    - "70486"
+    - "70490"
+    - "70551"
+    - "70552"
+    - "70553"
+    - "71250"
+    - "71260"
+    - "71270"
+    - "72148"
+    - "72149"
+    - "73718"
+    - "73719"
+    - "73720"
+    - "73721"
+    - "74176"
+    - "74177"
+    - "74178"
+    - "76700"
+    - "76705"
+    - "76770"
+    - "77080"

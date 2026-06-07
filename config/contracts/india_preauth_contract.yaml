@@ -1,0 +1,41 @@
+contract_id: india_preauth
+version: 1.0.0
+
+transport:
+  base_url_env: IN_PREAUTH_BASE_URL
+  submit_path_env: IN_PREAUTH_SUBMIT_PATH
+  status_path_env: IN_PREAUTH_STATUS_PATH_TEMPLATE
+  receipt_path_env: IN_PREAUTH_RECEIPT_PATH_TEMPLATE
+  timeout_env: IN_PREAUTH_TIMEOUT_SECONDS
+  retries_env: IN_PREAUTH_MAX_RETRIES
+  backoff_env: IN_PREAUTH_BACKOFF_SECONDS
+  require_https_in_live: true
+
+auth:
+  mode_env: IN_PREAUTH_AUTH_MODE
+  supported_modes:
+    - bearer
+    - hmac
+    - bearer_hmac
+  bearer_token_env: IN_PREAUTH_API_TOKEN
+  hmac_secret_env: IN_PREAUTH_HMAC_SECRET
+  hmac_key_id_env: IN_PREAUTH_HMAC_KEY_ID
+
+headers:
+  idempotency: X-Idempotency-Key
+  timestamp: X-Request-Timestamp
+  signature: X-Quest-Signature
+  signature_timestamp: X-Quest-Timestamp
+  signature_key_id: X-Quest-Key-Id
+
+status_mapping:
+  queued: queued
+  submitted: submitted
+  accepted: acknowledged
+  ack: acknowledged
+  acknowledged: acknowledged
+  processing: processing
+  approved: approved
+  denied: denied
+  failed: failed
+  timeout: timeout

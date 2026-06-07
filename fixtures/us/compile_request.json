@@ -1,0 +1,19 @@
+{
+  "case_id": "US-FX-1001",
+  "country": "US",
+  "payer_id": "BCBS",
+  "fields": {
+    "patient_id": "USP-001",
+    "diagnosis_code": "M54.5",
+    "procedure_code": "72148",
+    "provider_npi": "1234567890",
+    "clinical_indication": "Low back pain with radiculopathy"
+  },
+  "evidence": [
+    {"field": "patient_id", "value": "USP-001", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "diagnosis_code", "value": "M54.5", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "procedure_code", "value": "72148", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "provider_npi", "value": "1234567890", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "clinical_indication", "value": "Low back pain with radiculopathy", "provenance": "CLINICAL_NOTE_V1"}
+  ]
+}

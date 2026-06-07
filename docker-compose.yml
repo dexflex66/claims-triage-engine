@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: payer_proof_claims
+      POSTGRES_USER: payer
+      POSTGRES_PASSWORD: payer_password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payer -d payer_proof_claims"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://payer:payer_password@db:5432/payer_proof_claims
+      OIDC_AUDIENCE: payer-proof-claims
+      OIDC_REQUIRE_SIGNATURE: "false"
+      KEY_ROTATION_ENFORCED: "false"
+      MTLS_REQUIRED: "false"
+      IP_ALLOWLIST_ENABLED: "false"
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

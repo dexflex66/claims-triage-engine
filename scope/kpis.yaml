@@ -1,0 +1,54 @@
+# Baseline KPI definitions — track from day 1
+# Used for reporting and closed-loop learning
+
+operational:
+  staff_minutes_per_case:
+    description: "Mean staff minutes spent per prior-auth case (intake to approve-to-send)"
+    unit: "minutes"
+    aggregation: "mean"
+  cases_touched_per_reviewer_per_day:
+    description: "Cases in review queue touched (viewed/approved/rejected) per reviewer per day"
+    unit: "count"
+    aggregation: "sum_by_reviewer_day"
+
+clinical_ops_quality:
+  missing_doc_rate_before_submit:
+    description: "Share of cases that had at least one missing-doc flag before submission"
+    unit: "ratio"
+    aggregation: "mean"
+  resubmission_rate:
+    description: "Share of cases that required resubmission after first send"
+    unit: "ratio"
+    aggregation: "mean"
+
+financial:
+  denial_rate_by_payer:
+    description: "Denial count / submission count by payer"
+    unit: "ratio"
+    aggregation: "by_payer"
+  denial_rate_by_code:
+    description: "Denial count / submission count by procedure code"
+    unit: "ratio"
+    aggregation: "by_code"
+  days_to_approval:
+    description: "Calendar days from first submission to approval (or final denial)"
+    unit: "days"
+    aggregation: "mean"
+  recovered_revenue:
+    description: "Revenue associated with approvals that would have been denied without packet improvement"
+    unit: "currency"
+    aggregation: "sum"
+
+trust:
+  citation_precision:
+    description: "Share of generated claim statements that map to a valid source citation"
+    unit: "ratio"
+    aggregation: "mean"
+  reviewer_override_rate:
+    description: "Share of system recommendations overridden by human reviewer"
+    unit: "ratio"
+    aggregation: "mean"
+  audit_completeness:
+    description: "Share of decisions with full audit trail (all required events logged)"
+    unit: "ratio"
+    aggregation: "mean"

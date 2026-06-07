@@ -1,0 +1,12 @@
+{
+  "source_format": "era_json",
+  "payload": {
+    "remittance_id": "US-RMT-1001",
+    "adjudication_status": "approved",
+    "paid_amount": 245.75,
+    "allowed_amount": 260.00,
+    "denial_codes": [],
+    "payer_claim_id": "US-CLM-1001",
+    "timestamp_utc": "2026-02-17T00:00:00Z"
+  }
+}

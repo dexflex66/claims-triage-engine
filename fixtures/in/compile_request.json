@@ -1,0 +1,19 @@
+{
+  "case_id": "IN-FX-2001",
+  "country": "IN",
+  "payer_id": "STAR_HEALTH",
+  "fields": {
+    "patient_id": "INP-001",
+    "diagnosis_code": "M54.5",
+    "procedure_code": "RAD_MRI_SPINE_L",
+    "provider_id": "IN-PROV-0099",
+    "clinical_indication": "Persistent lumbar pain with neuro deficits"
+  },
+  "evidence": [
+    {"field": "patient_id", "value": "INP-001", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "diagnosis_code", "value": "M54.5", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "procedure_code", "value": "RAD_MRI_SPINE_L", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "provider_id", "value": "IN-PROV-0099", "provenance": "CLINICAL_NOTE_V1"},
+    {"field": "clinical_indication", "value": "Persistent lumbar pain with neuro deficits", "provenance": "CLINICAL_NOTE_V1"}
+  ]
+}

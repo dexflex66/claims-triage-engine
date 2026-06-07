@@ -1,0 +1,10 @@
+{
+  "rail": "erp",
+  "idempotency_key": "us-pay-idem-1001",
+  "currency": "USD",
+  "beneficiary": {
+    "entity_type": "provider",
+    "provider_npi": "1234567890",
+    "name": "Example Radiology Group"
+  }
+}

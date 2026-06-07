@@ -1,0 +1,10 @@
+{
+  "rail": "erp",
+  "idempotency_key": "in-pay-idem-2001",
+  "currency": "INR",
+  "beneficiary": {
+    "entity_type": "provider",
+    "provider_id": "IN-PROV-0099",
+    "name": "Metro Diagnostics India"
+  }
+}
