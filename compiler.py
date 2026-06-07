@@ -14,9 +14,31 @@ _QUEST_ROOT = Path(__import__("os").environ.get("QUEST_ROOT", str(_QUEST_ROOT)))
 if str(_QUEST_ROOT) not in sys.path:
     sys.path.insert(0, str(_QUEST_ROOT))
 
-from core.policy import Policy, load_policy  # noqa: E402
-from core.scoring import conflict_score, coverage_score, provenance_score  # noqa: E402
-from core.conflicts import derive_conflicts as quest_derive_conflicts  # noqa: E402
+try:
+    from core.policy import Policy, load_policy  # noqa: E402
+    from core.scoring import conflict_score, coverage_score, provenance_score  # noqa: E402
+    from core.conflicts import derive_conflicts as quest_derive_conflicts  # noqa: E402
+    QUEST_AVAILABLE = True
+except ModuleNotFoundError:
+    QUEST_AVAILABLE = False
+
+    class Policy:  # type: ignore[no-redef]
+        pass
+
+    def load_policy(*a, **kw):
+        raise RuntimeError("QuEST core not available — set QUEST_ROOT env var")
+
+    def coverage_score(*a, **kw):
+        raise RuntimeError("QuEST core not available — set QUEST_ROOT env var")
+
+    def conflict_score(*a, **kw):
+        raise RuntimeError("QuEST core not available — set QUEST_ROOT env var")
+
+    def provenance_score(*a, **kw):
+        raise RuntimeError("QuEST core not available — set QUEST_ROOT env var")
+
+    def quest_derive_conflicts(*a, **kw):
+        raise RuntimeError("QuEST core not available — set QUEST_ROOT env var")
 
 
 def _to_float(v, default=0.0):
